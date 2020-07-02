@@ -1,5 +1,7 @@
 import React from 'react';
 import Main from './components/MainComponent';
+import 'bootstrap-social/bootstrap-social.css';
+import 'font-awesome/css/font-awesome.min.css';
 import './App.css';
 
 

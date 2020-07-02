@@ -4,9 +4,8 @@ import {
     Container, Row, Col
 } from 'reactstrap'
 
-class DishDetail extends React.Component {
-    render() {
-        const dish = this.props.dish[0];
+function DishDetail (props) {
+        const dish = props.dish[0];
         if (dish != null) {
             const comments = dish.comments.map(
                 comment => {
@@ -53,7 +52,6 @@ class DishDetail extends React.Component {
                 </div>
             )
         }
-    }
 }
 
 export default DishDetail;
