@@ -11,6 +11,7 @@ import { DISHES } from '../shared/dishes';
 import { COMMENTS } from '../shared/comments';
 import { LEADERS } from '../shared/leaders';
 import { PROMOTIONS } from '../shared/promotions';
+import About from './AboutComponent';
 
 class Main extends React.Component {
     constructor(props) {
@@ -53,6 +54,7 @@ class Main extends React.Component {
                     <Route exact path="/contactus" component={Contact}/>
                     <Route exact path="/menu" component={() => <Menu dishes={this.state.dishes}/>}/>
                     <Route path="/menu/:dishId" component={DishWithId}/>
+                    <Route path="/aboutus" component={() => <About leaders={this.state.leaders}/>}/>
                     <Redirect to="/home"/>
                 </Switch>
                 {/* <Menu dishes={this.state.dishes} onClick={(dishId) => this.onDishSelect(dishId)} /> */}

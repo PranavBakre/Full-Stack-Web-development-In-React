@@ -19,7 +19,7 @@ function RenderCard({item}) {
 function Home (props) {
     return (
             <Container>
-                <Row className="align-items-start">
+                <Row className="align-items-stretch">
                     <Col xs="12" md className="m-1">
                         <RenderCard item={props.dish}/>
                     </Col>
