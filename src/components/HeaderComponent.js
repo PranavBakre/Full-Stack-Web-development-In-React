@@ -14,7 +14,6 @@ class Header extends React.Component {
             isNavOpen: false,
             isModalOpen: false
         };
-        //this.toggleNav=this.toggleNav.bind(this);
     }
 
     toggleNav = () => {
