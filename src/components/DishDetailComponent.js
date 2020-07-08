@@ -21,8 +21,7 @@ class CommentForm extends React.Component {
     }
 
     handleSubmit = (value) => {
-        console.log(JSON.stringify(value));
-        alert(`Rating:${value.ratings}\nAuthor:${value.author}\nComment:${value.comment}`);
+        this.props.addComment(this.props.dishId, value.rating, value.author, value.comment);
     }
     toggleModal = () => {
         this.setState({ isModalOpen: !this.state.isModalOpen });
@@ -47,7 +46,7 @@ class CommentForm extends React.Component {
                                         Rating
                                 </Label>
                                     <Col xs="12" md="10">
-                                        <Control.select id="rating" name="ratings" model=".ratings" className="form-control"
+                                        <Control.select id="rating" name="rating" model=".rating" className="form-control"
                                             validators={{ required }}>
                                             <option selected disabled>Select Rating</option>
                                             <option value="1">1</option>
@@ -56,7 +55,7 @@ class CommentForm extends React.Component {
                                             <option value="4">4</option>
                                             <option value="5">5</option>
                                         </Control.select>
-                                        <Errors model=".ratings" className="text-danger" show="touched" messages={{ required: "Required" }}
+                                        <Errors model=".rating" className="text-danger" show="touched" messages={{ required: "Required" }}
                                             wrapper="ul" component="li"
                                         ></Errors>
                                     </Col>
@@ -162,7 +161,8 @@ function DishDetail(props) {
                             <div>
                                 {comments}
                             </div>
-                            <CommentForm />
+                            <CommentForm addComment={props.addComment}
+                            dishId={props.dish.id}/>
                         </Col>
 
 
