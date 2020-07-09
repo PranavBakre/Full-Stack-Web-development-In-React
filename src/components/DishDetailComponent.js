@@ -5,7 +5,7 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { LocalForm, Control, Errors } from 'react-redux-form';
-
+import {Loading} from './LoadingComponent';
 const required = val => val && val.length;
 const minLength = len => val => val && val.length >= len;
 const maxLength = len => val => !val || val.length < len;
@@ -109,7 +109,25 @@ class CommentForm extends React.Component {
 
 function DishDetail(props) {
     const dish = props.dish;
-    if (dish != null) {
+    if (props.isLoading) {
+        return (
+            <Container>
+                <Row>
+                    <Loading/>
+                </Row>
+            </Container>
+            )
+    }
+    else if (props.errorMsg) {
+        return (
+            <Container>
+                <Row>
+                    <h4>{props.errorMsg}</h4>
+                </Row>
+            </Container>
+            )
+    }
+    else if (dish != null) {
         const comments = props.comments.map(
             comment => {
                 return (

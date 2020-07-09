@@ -1,8 +1,19 @@
 import React from 'react';
 import { Container, Row, Col, Card, CardImg, CardBody, CardTitle, CardSubtitle, CardText } from 'reactstrap';
+import { Loading } from './LoadingComponent';
 
-function RenderCard({item}) {
-
+function RenderCard({item,isLoading,errorMsg}) {
+    if(isLoading) {
+        return (
+            <Loading/>
+        )
+    }
+    else if (errorMsg) {
+        return (
+            <h4>{errorMsg}</h4>
+        )
+    }
+    else {
     return(
         <Card>
             <CardImg src={item.image} alt={item.name} />
@@ -13,7 +24,7 @@ function RenderCard({item}) {
             </CardBody>
         </Card>
     );
-
+    };
 }
 
 function Home (props) {
@@ -21,7 +32,9 @@ function Home (props) {
             <Container>
                 <Row className="align-items-stretch">
                     <Col xs="12" md className="m-1">
-                        <RenderCard item={props.dish}/>
+                        <RenderCard item={props.dish} 
+                        isLoading={props.dishesLoading}
+                        errorMsg={props.errorMsg}/>
                     </Col>
                     <Col xs="12" md className="m-1">
                         <RenderCard item={props.promotion}/>
