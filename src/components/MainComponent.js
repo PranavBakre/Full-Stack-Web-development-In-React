@@ -8,8 +8,9 @@ import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import Contact from './ContactComponent';
 import { connect } from 'react-redux';
 import About from './AboutComponent';
-import { fetchDishes, fetchComments, fetchPromos, postComment } from '../redux/ActionCreators'
-import { actions } from 'react-redux-form'
+import { fetchDishes, fetchComments, fetchPromos, postComment } from '../redux/ActionCreators';
+import { actions } from 'react-redux-form';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 class Main extends React.Component {
     constructor(props) {
         super(props);
@@ -48,14 +49,19 @@ class Main extends React.Component {
         return (
             <div className="App">
                 <Header />
-                <Switch>
-                    <Route path="/home" component={HomePage} />
-                    <Route exact path="/contactus" component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />
-                    <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />
-                    <Route path="/menu/:dishId" component={DishWithId} />
-                    <Route path="/aboutus" component={() => <About leaders={this.props.leaders} />} />
-                    <Redirect to="/home" />
-                </Switch>
+                <TransitionGroup>
+                    <CSSTransition key={this.props.location.key} classNames="page" timeout="3000">
+                        <Switch>
+                            <Route path="/home" component={HomePage} />
+                            <Route exact path="/contactus" component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />
+                            <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />
+                            <Route path="/menu/:dishId" component={DishWithId} />
+                            <Route path="/aboutus" component={() => <About leaders={this.props.leaders} />} />
+                            <Redirect to="/home" />
+                        </Switch>
+                    </CSSTransition>
+                </TransitionGroup>
+
                 <Footer />
             </div>
         );
@@ -76,7 +82,7 @@ const mapDispatchToProps = (dispatch) => ({
     fetchDishes: () => { dispatch(fetchDishes()) },
     fetchComments: () => { dispatch(fetchComments()) },
     fetchPromos: () => { dispatch(fetchPromos()) },
-    postComment:(dishId, rating, author, comment) => { dispatch(postComment(dishId, rating, author, comment))},
+    postComment: (dishId, rating, author, comment) => { dispatch(postComment(dishId, rating, author, comment)) },
     resetFeedbackForm: () => { dispatch(actions.reset('feedback')) }
 })
 
