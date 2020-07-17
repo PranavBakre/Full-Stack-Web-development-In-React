@@ -5,6 +5,7 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom'
 import {Loading} from './LoadingComponent';
+import {baseURL} from'../shared/baseUrl';
 function Menu(props) {
     const menu = props.dishes.dishes.map(
         dish => {
@@ -12,7 +13,7 @@ function Menu(props) {
                 <Col key={dish.id} xs="12" md="5" className="m-1">
                     <Card >
                         <Link to={`/menu/${dish.id}`}>
-                            <CardImg witdh="100%" src={dish.image} alt={dish.name} />
+                            <CardImg witdh="100%" src={baseURL+dish.image} alt={dish.name} />
                             <CardImgOverlay >
                                 <CardTitle className="font-weight-bold">{dish.name}</CardTitle>
                             </CardImgOverlay>
