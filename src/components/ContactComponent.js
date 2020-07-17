@@ -18,7 +18,7 @@ class Contact extends React.Component {
 
     handleSubmit = (value) => {
 
-        alert("Current State is" + JSON.stringify(value))
+        this.props.postFeedback(value)
         this.props.resetFeedbackForm()
     }
 

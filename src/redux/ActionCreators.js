@@ -1,7 +1,9 @@
 import * as ActionTypes from './ActionTypes';
-import { DISHES } from '../shared/dishes';
 import { baseURL } from '../shared/baseUrl';
-import { post } from 'jquery';
+
+
+
+
 export const addComment = (comment) => ({
     type: ActionTypes.ADD_COMMENT,
     payload: comment
@@ -157,4 +159,79 @@ export const promosFailed = (errorMsg) => ({
 export const addPromos = (promos) => ({
     type: ActionTypes.ADD_PROMOS,
     payload: promos
+})
+
+
+export const leaderLoading = () => ({
+    type: ActionTypes.LEADER_LOADING
+})
+
+export const leaderFailed = (errorMsg) => ({
+    type: ActionTypes.LEADER_FAILED,
+    payload: errorMsg
+})
+
+export const addLeader = leaders => ({
+    type: ActionTypes.ADD_LEADERS,
+    payload: leaders
+})
+
+export const fetchLeaders = () => dispatch => {
+    dispatch(leaderLoading());
+    fetch(baseURL + "leaders")
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                let error = new Error("Error:" + response.status + " " + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+        reject => {
+            let error = new Error(reject.message);
+            throw error
+        }).then(leaders => {
+            dispatch(addLeader(leaders));
+        }).catch(error => {
+            dispatch(leaderFailed(error.message))
+        });
+}
+
+
+export const postFeedback = (feedback) => dispatch => {
+    fetch(baseURL + "feedback", {
+        method: "post",
+        body: JSON.stringify(feedback),
+        headers: {
+            'Content-Type': "application/json"
+        },
+        credentials: 'same-origin'
+
+    }).then(response => {
+        if (response.ok) {
+            return response.json()
+        } else {
+            let error =new Error("Error:" + response.status + " " + response.statusText);
+            throw error;
+        }
+    }, reject => {
+        let error = new Error(reject.message);
+        throw error;
+    }).then(feedback => {
+        alert(JSON.stringify(feedback));
+        //dispatch(addFeeback(feedback))
+    })
+    .catch(error => {
+        console.log(error.message)
+    })
+}
+export const addFeeback=(feedback)=>({
+    type:ActionTypes.ADD_FEEDBACK,
+    payload: feedback
+})
+
+export const failedFeedback=(errorMsg) => ({
+    type:ActionTypes.FAILED_FEEBACK,
+    payload:errorMsg
 })

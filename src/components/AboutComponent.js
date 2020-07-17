@@ -1,7 +1,8 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media, Container, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
-
+import { Loading } from './LoadingComponent';
+import { Fade, Stagger } from 'react-animation-components';
 function RenderLeader({ leader }) {
     return (
         <Media tag="li">
@@ -17,13 +18,40 @@ function RenderLeader({ leader }) {
     )
 }
 
-function About(props) {
-
-    const leaders = props.leaders.map((leader) => {
+function RenderLeaders({ isLoading, leaders, errorMsg }) {
+    if (isLoading) {
+        return (<Col>
+            <Loading />
+        </Col>)
+    }
+    else if (errorMsg) {
         return (
-            <RenderLeader leader={leader} />
+            <Col>
+                <h4>{errorMsg}</h4>
+            </Col>
+        )
+    }
+    const renderedLeaders = leaders.map((leader) => {
+        return (
+            <Fade in>
+                <RenderLeader leader={leader} />
+            </Fade>
         );
     });
+    return (
+        <Col xs="12">
+            <Media list>
+                <Stagger in>
+                    {renderedLeaders}
+                </Stagger>
+            </Media>
+        </Col>
+    )
+}
+
+function About(props) {
+
+
 
     return (
         <Container>
@@ -82,11 +110,9 @@ function About(props) {
                 <Col xs="12">
                     <h2>Corporate Leadership</h2>
                 </Col>
-                <Col xs="12">
-                    <Media list>
-                        {leaders}
-                    </Media>
-                </Col>
+                <RenderLeaders leaders={props.leaders}
+                    isLoading={props.isLoading}
+                    errorMsg={props.errorMsg} />
             </Row>
         </Container>
     );

@@ -135,14 +135,14 @@ function DishDetail(props) {
             comment => {
                 return (
                     <Fade in>
-                    <div key={comment.id} className="m-2">
-                        <div>
-                            {comment.comment}
+                        <div key={comment.id} className="m-2">
+                            <div>
+                                {comment.comment}
+                            </div>
+                            <div className="mt-1">
+                                -- {comment.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(Date.parse(comment.date))}
+                            </div>
                         </div>
-                        <div className="mt-1">
-                            -- {comment.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(Date.parse(comment.date))}
-                        </div>
-                    </div>
                     </Fade>
                 );
             }
@@ -186,11 +186,9 @@ function DishDetail(props) {
                         </Col>
                         <Col xs="12" md="5" className="mt-1">
                             <h4>Comments</h4>
-                            <div>
-                                <Stagger in>
+                            <Stagger in>
                                 {comments}
-                                </Stagger>
-                            </div>
+                            </Stagger>
                             <CommentForm postComment={props.postComment}
                                 dishId={props.dish.id} />
                         </Col>
