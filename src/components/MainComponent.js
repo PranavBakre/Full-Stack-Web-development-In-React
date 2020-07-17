@@ -50,7 +50,7 @@ class Main extends React.Component {
             <div className="App">
                 <Header />
                 <TransitionGroup>
-                    <CSSTransition key={this.props.location.key} classNames="page" timeout="3000">
+                    <CSSTransition in key={this.props.location.key} classNames="page" timeout="3000">
                         <Switch>
                             <Route path="/home" component={HomePage} />
                             <Route exact path="/contactus" component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />

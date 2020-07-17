@@ -5,8 +5,10 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { LocalForm, Control, Errors } from 'react-redux-form';
-import {Loading} from './LoadingComponent';
-import {baseURL} from '../shared/baseUrl';
+import { Loading } from './LoadingComponent';
+import { baseURL } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
+
 const required = val => val && val.length;
 const minLength = len => val => val && val.length >= len;
 const maxLength = len => val => !val || val.length < len;
@@ -114,10 +116,10 @@ function DishDetail(props) {
         return (
             <Container>
                 <Row>
-                    <Loading/>
+                    <Loading />
                 </Row>
             </Container>
-            )
+        )
     }
     else if (props.errorMsg) {
         return (
@@ -126,12 +128,13 @@ function DishDetail(props) {
                     <h4>{props.errorMsg}</h4>
                 </Row>
             </Container>
-            )
+        )
     }
     else if (dish != null) {
         const comments = props.comments.map(
             comment => {
                 return (
+                    <Fade in>
                     <div key={comment.id} className="m-2">
                         <div>
                             {comment.comment}
@@ -140,6 +143,7 @@ function DishDetail(props) {
                             -- {comment.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(Date.parse(comment.date))}
                         </div>
                     </div>
+                    </Fade>
                 );
             }
         );
@@ -167,21 +171,28 @@ function DishDetail(props) {
                     </Row>
                     <Row>
                         <Col xs="12" md="5" className="m-1">
-                            <Card>
-                                <CardImg witdh="100%" src={baseURL+dish.image} alt={dish.name} />
-                                <CardBody>
-                                    <CardTitle><b>{dish.name}</b></CardTitle>
-                                    <CardText>{dish.description}</CardText>
-                                </CardBody>
-                            </Card>
+                            <FadeTransform in
+                                transformProps={{
+                                    exitTransform: 'scale(0.5) translateY(-50%)'
+                                }}>
+                                <Card>
+                                    <CardImg witdh="100%" src={baseURL + dish.image} alt={dish.name} />
+                                    <CardBody>
+                                        <CardTitle><b>{dish.name}</b></CardTitle>
+                                        <CardText>{dish.description}</CardText>
+                                    </CardBody>
+                                </Card>
+                            </FadeTransform>
                         </Col>
                         <Col xs="12" md="5" className="mt-1">
                             <h4>Comments</h4>
                             <div>
+                                <Stagger in>
                                 {comments}
+                                </Stagger>
                             </div>
                             <CommentForm postComment={props.postComment}
-                            dishId={props.dish.id}/>
+                                dishId={props.dish.id} />
                         </Col>
 
 
