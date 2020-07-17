@@ -1,15 +1,49 @@
 import * as ActionTypes from './ActionTypes';
 import { DISHES } from '../shared/dishes';
 import { baseURL } from '../shared/baseUrl';
-export const addComment = (dishId, rating, author, comment) => ({
+import { post } from 'jquery';
+export const addComment = (comment) => ({
     type: ActionTypes.ADD_COMMENT,
-    payload: {
+    payload: comment
+});
+
+export const postComment = (dishId, rating, author, comment) => dispatch => {
+    const newComment = {
         dishId,
         rating,
         author,
-        comment
+        comment,
+        date: new Date().toISOString()
     }
-});
+    fetch(baseURL + "comments", {
+        method: "post",
+        body: JSON.stringify(newComment),
+        headers: {
+            'Content-Type': "application/json"
+        },
+        credentials: 'same-origin'
+
+    }).then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            let error = new Error("Error: " + response.status + " " + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+        reject => {
+            let error = new Error(reject.message);
+            throw error
+        })
+        .then(response => response.json())
+        .then(response => dispatch(addComment(response)))
+        .catch(error => {
+            console.log("Post Comment: " + error.message);
+            alert("Your comment could not be posted\n\nError:" + error.message);
+        })
+}
 
 export const fetchDishes = () => dispatch => {
     dispatch(dishesLoading(true));
@@ -98,10 +132,10 @@ export const fetchPromos = () => dispatch => {
                 error.response = response;
                 throw error;
             }
-        },reject => {
-                let error = new Error(reject.message);
-                throw error
-            })
+        }, reject => {
+            let error = new Error(reject.message);
+            throw error
+        })
         .then(response => response.json())
         .then(promos => dispatch(addPromos(promos)))
         .catch(error => {

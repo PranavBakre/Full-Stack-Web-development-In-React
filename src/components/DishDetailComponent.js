@@ -22,7 +22,7 @@ class CommentForm extends React.Component {
     }
 
     handleSubmit = (value) => {
-        this.props.addComment(this.props.dishId, value.rating, value.author, value.comment);
+        this.props.postComment(this.props.dishId, value.rating, value.author, value.comment);
     }
     toggleModal = () => {
         this.setState({ isModalOpen: !this.state.isModalOpen });
@@ -180,7 +180,7 @@ function DishDetail(props) {
                             <div>
                                 {comments}
                             </div>
-                            <CommentForm addComment={props.addComment}
+                            <CommentForm postComment={props.postComment}
                             dishId={props.dish.id}/>
                         </Col>
 
